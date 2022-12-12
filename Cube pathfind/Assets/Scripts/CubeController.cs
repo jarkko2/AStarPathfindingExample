@@ -5,11 +5,15 @@ public class CubeController : MonoBehaviour
 {
     public bool connectionToEngine;
     public bool connectionToFuel;
+    public bool Connection;
     public CubeManager.CubeType type;
     public MeshRenderer meshRend;
     public List<GridManager.Path> paths = new List<GridManager.Path>();
     public bool Occupied;
     public GameObject originalSeeker;
+
+    // Engine is default connection required
+    public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.ENGINE };
 
     public void ClearPath(CubeManager.CubeType type)
     {
@@ -42,7 +46,7 @@ public class CubeController : MonoBehaviour
     {
         if (type == CubeManager.CubeType.WHEEL)
         {
-            meshRend.material = connectionToEngine && connectionToFuel ? CubeManager.Instance.Connected : CubeManager.Instance.NotConnected;
+            meshRend.material = Connection ? CubeManager.Instance.Connected : CubeManager.Instance.NotConnected;
         }
         if (type == CubeManager.CubeType.FUEL)
         {
@@ -70,23 +74,38 @@ public class CubeController : MonoBehaviour
         //connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.ENGINE), CubeManager.CubeType.ENGINE);
         //connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.FUEL), CubeManager.CubeType.FUEL);
 
-        foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.ENGINE))
+        foreach (CubeManager.CubeType type in connectionsRequired)
         {
-            connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.ENGINE);
-            if (connectionToEngine)
+            foreach (var item in CubeManager.Instance.SortClosestType(gameObject, type))
             {
-                break;
+                bool connection = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, type);
+                if (!connection)
+                {
+                    Connection = false;
+                    return;
+                }
             }
         }
+        Connection = true;
 
-        foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.FUEL))
-        {
-            connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.FUEL);
-            if (connectionToFuel)
-            {
-                break;
-            }
-        } 
+
+        //foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.ENGINE))
+        //{
+        //    connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.ENGINE);
+        //    if (connectionToEngine)
+        //    {
+        //        break;
+        //    }
+        //}
+
+        //foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.FUEL))
+        //{
+        //    connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.FUEL);
+        //    if (connectionToFuel)
+        //    {
+        //        break;
+        //    }
+        //} 
     }
 
     private void OnMouseDown()
