@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     private List<Cube> grid = new List<Cube>();
     //private List<Cube> path = new List<Cube>();
     public GameObject pathObject;
-    public GameObject fuelpathObject;
+
     //public List<GameObject> pathObjects;
     public float delayOnSpawning;
 
@@ -33,134 +33,115 @@ public class GridManager : MonoBehaviour
         {
             for (int i = 0; i < path.Count; i++)
             {
-                if (pathType == CubeManager.CubeType.ENGINE)
+                PathBlockManager.PathConfiguration configuration = PathBlockManager.Instance.GetConfigurationByType(pathType);
+                Material material = configuration.PathMaterial;
+                Vector3 offset = configuration.Offset;
+                float Width = configuration.Width;
+                float Height = 1.1f;
+
+                GameObject pathObj = Instantiate(Instance.pathObject, path[i].worldPosition + new Vector3(0, 0.1f, 0), Quaternion.identity);
+                pathObj.GetComponent<MeshRenderer>().material = material;
+
+                if (i + 1 >= path.Count || i <= 0)
                 {
-                    GameObject pathObj = Instantiate(Instance.pathObject, path[i].worldPosition + new Vector3(0, 0.1f, 0), Quaternion.identity); 
-                    if (i + 1 >= path.Count || i <= 0)
-                    {
-                        pathObj.transform.localScale = new Vector3(0.5f, 1.1f, 0.5f);
-                        pathObjects.Add(pathObj);
-                    }
-                    else
-                    {
-                        Mesh mesh;
-                        int rotation;
-                        pathObj.transform.localScale = FigureOutScaleRotationAndMesh(path[i].worldPosition, path[i + 1].worldPosition, path[i - 1].worldPosition, 0, out mesh, out rotation);
-                        pathObj.transform.GetComponent<MeshFilter>().mesh = mesh;
-                        pathObj.transform.Rotate(new Vector3(0, rotation, 0));
-                        pathObjects.Add(pathObj);
-                    }
+                    pathObj.transform.localScale = new Vector3(Width + offset.x, Height + offset.y, Width + offset.z);
+                    pathObjects.Add(pathObj);
                 }
-                if (pathType == CubeManager.CubeType.FUEL)
+                else
                 {
-                    GameObject pathObj = Instantiate(Instance.fuelpathObject, path[i].worldPosition + new Vector3(0, 0.1f, 0), Quaternion.identity);
-                    if (i + 1 >= path.Count || i <= 0)
-                    {
-                        pathObj.transform.localScale = new Vector3(0.5f - 0.1f, 1.1f + 0.1f, 0.5f - 0.1f);
-                        pathObjects.Add(pathObj);
-                    }
-                    else
-                    {
-                        Mesh mesh;
-                        int rotation;
-                        pathObj.transform.localScale = FigureOutScaleRotationAndMesh(path[i].worldPosition, path[i + 1].worldPosition, path[i - 1].worldPosition, 0.1f, out mesh, out rotation);
-                        pathObj.transform.GetComponent<MeshFilter>().mesh = mesh;
-                        pathObj.transform.Rotate(new Vector3(0, rotation, 0));
-                        pathObjects.Add(pathObj);
-                    }
+                    Mesh mesh;
+                    int rotation;
+                    pathObj.transform.localScale = FigureOutScaleRotationAndMesh(path[i].worldPosition, path[i + 1].worldPosition, path[i - 1].worldPosition, offset, Width, Height, out mesh, out rotation);
+                    pathObj.transform.GetComponent<MeshFilter>().mesh = mesh;
+                    pathObj.transform.Rotate(new Vector3(0, rotation, 0));
+                    pathObjects.Add(pathObj);
                 }
                 yield return new WaitForSeconds(Instance.delayOnSpawning);
             }       
         }
-        public Vector3 FigureOutScaleRotationAndMesh(Vector3 start, Vector3 next, Vector3 behind, float offset, out Mesh mesh, out int rotation)
+        public Vector3 FigureOutScaleRotationAndMesh(Vector3 start, Vector3 next, Vector3 behind, Vector3 offset, float width, float height, out Mesh mesh, out int rotation)
         {
-            Vector3 scale = new Vector3(0.5f - offset, 1.1f + offset, 0.5f - offset);
+            Vector3 scale = new Vector3(0.5f + offset.x, height + offset.y, 0.5f + offset.z);
             Mesh tempmesh = PathBlockManager.Instance.DefaultMesh;
             int tempRotation = 0;
+            float DefaultWidthLine = 0.2f;
+            float DefaultWidthFull = 1.0f;
             // - - right
             if (start.x < next.x && start.z == next.z && behind.z == start.z && behind.x < start.x)
             {
-                scale = new Vector3(1f, 1.1f + offset, 0.2f - offset);
+                scale = new Vector3(DefaultWidthFull, height + offset.y, DefaultWidthLine + offset.z);
             }
             // left
             if (start.x > next.x && start.z == next.z && behind.z == start.z && behind.x > start.x)
             {
-                scale = new Vector3(1f, 1.1f + offset, 0.2f - offset);
+                scale = new Vector3(DefaultWidthFull, height + offset.y, DefaultWidthLine + offset.z);
             }
 
             // | |
             // down
             if (start.x == next.x && start.z > next.z && behind.z > start.z && behind.x == start.x)
             {
-                scale = new Vector3(0.2f - offset, 1.1f + offset, 1f);
+                scale = new Vector3(DefaultWidthLine + offset.x, height + offset.y, DefaultWidthFull);
             }
             // up
             if (start.x == next.x && start.z < next.z && behind.z < start.z && behind.x == start.x)
             {
-                scale = new Vector3(0.2f - offset, 1.1f + offset, 1f);
+                scale = new Vector3(DefaultWidthLine + offset.x, height + offset.y, DefaultWidthFull);
             }
 
             // corner from up to left
             if (next.x < start.x && next.z == start.z && behind.z > start.z && behind.x == start.x)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
             }
             // corner from up to right
             if (next.x > start.x && next.z == start.z && behind.z > start.z && behind.x == start.x)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 90;
             }
             // corner from down to left
             if (next.x < start.x && next.z == start.z && behind.z < start.z && behind.x == start.x)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 270;
             }
             // corner from left to down
             if (next.x == start.x && next.z < start.z && behind.x < start.x && behind.z == start.z)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 270;
             }
             // corner from right to up
             if (next.x == start.x && next.z > start.z && behind.x > start.x && behind.z == start.z)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 90;
             }
             // corner from right to down
             if (next.x == start.x && next.z < start.z && behind.x > start.x && behind.z == start.z)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 180;
             }
             // corner from down to right
             if (next.x > start.x && next.z == start.z && behind.x == start.x && behind.z < start.z)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(1f + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 180;
             }
             // corner from left to up
             if (next.x == start.x && next.z > start.z && behind.x < start.x && behind.z == start.z)
             {
-                Debug.Log("Corner found");
                 tempmesh = PathBlockManager.Instance.CornerMesh;
-                scale = new Vector3(1f - offset, 1.1f + offset, 1f - offset);
+                scale = new Vector3(DefaultWidthFull + offset.x, height + offset.y, DefaultWidthFull + offset.z);
                 tempRotation = 0;
             }
             mesh = tempmesh;

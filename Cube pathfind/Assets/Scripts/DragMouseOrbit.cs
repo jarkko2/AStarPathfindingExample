@@ -22,7 +22,7 @@ public class DragMouseOrbit : MonoBehaviour
     private Vector2 swipeDirection; //swipe delta vector2
     private Quaternion cameraRot; // store the quaternion after the slerp operation
     private Touch touch;
-    private float distanceBetweenCameraAndTarget;
+    public float distanceBetweenCameraAndTarget = 10;
 
     private float minXRotAngle = -80; //min angle around x axis
     private float maxXRotAngle = 80; // max angle around x axis
@@ -42,12 +42,13 @@ public class DragMouseOrbit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+       // distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
     }
 
     // Update is called once per frame
     void Update()
     {
+        distanceBetweenCameraAndTarget += Input.mouseScrollDelta.y;
         if (rotateMethod == RotateMethod.Mouse)
         {
             if (Input.GetMouseButton(2))

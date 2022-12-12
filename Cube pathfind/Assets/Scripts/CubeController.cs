@@ -74,6 +74,8 @@ public class CubeController : MonoBehaviour
         //connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.ENGINE), CubeManager.CubeType.ENGINE);
         //connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.FUEL), CubeManager.CubeType.FUEL);
 
+        bool noConnectionAtSomePoint = false;
+
         foreach (CubeManager.CubeType type in connectionsRequired)
         {
             foreach (var item in CubeManager.Instance.SortClosestType(gameObject, type))
@@ -81,12 +83,11 @@ public class CubeController : MonoBehaviour
                 bool connection = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, type);
                 if (!connection)
                 {
-                    Connection = false;
-                    return;
+                    noConnectionAtSomePoint = true;
                 }
             }
         }
-        Connection = true;
+        Connection = !noConnectionAtSomePoint;
 
 
         //foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.ENGINE))

@@ -110,6 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49500b204c64bf949a8e2e6febe16a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connection: 0
-  engineRef: {fileID: 0}
+  connectionToEngine: 0
+  connectionToFuel: 0
+  Connection: 0
   type: 0
+  meshRend: {fileID: 0}
+  paths: []
+  Occupied: 0
+  originalSeeker: {fileID: 0}
+  connectionsRequired: 01000000

@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 2f02d6b95a863bf43bbc191b8953b972, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -362,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 475964882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.03, y: -0.5, z: 0.05}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -682,6 +682,7 @@ MonoBehaviour:
   touchRotateSpeed: 17.5
   slerpValue: 0.1
   rotateMethod: 0
+  distanceBetweenCameraAndTarget: 10
 --- !u!1001 &1075791405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -806,7 +807,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathObject: {fileID: 2354233673527627252, guid: 6b0becd0174f1c0489c3a811e5bad2ff, type: 3}
-  fuelpathObject: {fileID: 5410700058426315653, guid: 46a6b656b9fccf34eafc0043e6b51e7f, type: 3}
   delayOnSpawning: 0.1
 --- !u!114 &1712469397
 MonoBehaviour:
@@ -842,6 +842,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CornerMesh: {fileID: -5221963080773851136, guid: 0c5fcbdd3d0190a43a42d261d7752030, type: 3}
   DefaultMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  Materials:
+  - {fileID: 2100000, guid: 74e85dae6d93d5842ade28103a84e737, type: 2}
+  - {fileID: 2100000, guid: e16ae69bae227844c8fad0ebe48ed19b, type: 2}
+  pathConfigurations:
+  - Type: 1
+    PathMaterial: {fileID: 2100000, guid: 74e85dae6d93d5842ade28103a84e737, type: 2}
+    Width: 0.5
+    Offset: {x: 0, y: 0, z: 0}
+  - Type: 3
+    PathMaterial: {fileID: 2100000, guid: e16ae69bae227844c8fad0ebe48ed19b, type: 2}
+    Width: 0.5
+    Offset: {x: -0.1, y: 0.1, z: -0.1}
 --- !u!1001 &1736917092
 PrefabInstance:
   m_ObjectHideFlags: 0
