@@ -177,9 +177,10 @@ public class GridManager : MonoBehaviour
     public void AddBlockToGrid(GameObject cube)
     {
         int x = Mathf.RoundToInt(cube.transform.position.x);
+        int y = Mathf.RoundToInt(cube.transform.position.y);
         int z = Mathf.RoundToInt(cube.transform.position.z);
         Debug.Log("Position of cube: " + cube.transform.position);
-        grid.Add(new Cube(cube.transform.position, cube, x, z));
+        grid.Add(new Cube(cube.transform.position, cube, x, y, z));
     }
 
     public void RemoveBlockFromGrid(GameObject cube)
@@ -318,10 +319,12 @@ public class GridManager : MonoBehaviour
     public List<Cube> GetNeighbours(Cube cube, GameObject origSeeker)
     {
         List<Cube> neighbours = new List<Cube>();
-        RaycastHit[] hits = Physics.SphereCastAll(cube.cubeObject.transform.position, 0.5f, transform.up);
-        foreach (RaycastHit hit in hits)
+        Collider[] hits = Physics.OverlapSphere(cube.cubeObject.transform.position, 0.5f);
+       
+        foreach (Collider hit in hits)
         {
-            if (hit.transform.gameObject != cube.cubeObject)
+            Debug.Log(hit);
+            if (hit.transform.gameObject != cube.cubeObject && hit.transform.GetComponent<CubeController>())
             {
                 Debug.Log(hit.transform.position);
 
@@ -341,15 +344,21 @@ public class GridManager : MonoBehaviour
 
     private int GetDistance(Cube nodeA, Cube nodeB)
     {
-        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-        int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+        //int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        //int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
-        if (dstX > dstY)
-        {
-            return 14 * dstY + 10 * (dstX - dstY);
-        }
+        //int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        //int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+        //int dstZ = Mathf.Abs(nodeA.gridZ - nodeB.gridZ);
 
-        return 14 * dstX + 10 * (dstY - dstX);
+
+        //if (dstX > dstY)
+        //{
+        //    return 14 * dstY + 10 * (dstX - dstY);
+        //}
+
+        //return 14 * dstX + 10 * (dstY - dstX);
+        return Mathf.RoundToInt(Vector3.Distance(new Vector3(nodeA.gridX, nodeA.gridY, nodeA.gridZ), new Vector3(nodeB.gridX, nodeB.gridY, nodeB.gridZ)));
     }
 
 }

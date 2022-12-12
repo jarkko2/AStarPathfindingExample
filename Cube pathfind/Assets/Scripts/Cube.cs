@@ -8,6 +8,7 @@ public class Cube
     public Cube parent;
     public int gridX;
     public int gridY;
+    public int gridZ;
     public int gCost;
     public int hCost;
     public int fCost
@@ -19,11 +20,12 @@ public class Cube
     }
     public bool Occupied;
 
-    public Cube(Vector3 _worldPos, GameObject _cubeObject, int _gridX, int _gridY)
+    public Cube(Vector3 _worldPos, GameObject _cubeObject, int _gridX, int _gridY, int _gridZ)
     {
         worldPosition = _worldPos;
         cubeObject = _cubeObject;
         gridX = _gridX;
         gridY = _gridY;
+        gridZ = _gridZ;
     }
 }

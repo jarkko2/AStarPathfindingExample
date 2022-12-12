@@ -22,17 +22,25 @@ public class CubeManager : MonoBehaviour
     private void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hitData, 1000))
+        if (Physics.Raycast(ray, out RaycastHit hit, 50))
         {
-            worldPosition = hitData.point;
-            int x = Mathf.RoundToInt(hitData.point.x);
-            int y = 0;
-            int z = Mathf.RoundToInt(hitData.point.z);
+            worldPosition = hit.point;
+            float x = Mathf.RoundToInt(hit.point.x);
+            float y = Mathf.RoundToInt(hit.point.y);
+            float z = Mathf.RoundToInt(hit.point.z);
             cursor.transform.position = new Vector3(x, y, z);
+            //cursor.transform.rotation = Quaternion.FromToRotation(cursor.transform.up, hitData.normal) * cursor.transform.rotation;
+
+            if (hit.transform.GetComponent<CubeController>())
+            {
+                cursor.transform.position = (hit.transform.position + hit.transform.up) + (hit.normal - Vector3.up);
+            }
+
             //Debug.Log(hitData.point);
             if (Input.GetMouseButtonDown(1))
             {
-                CreateCube(new Vector3(x, y, z));
+                //CreateCube(new Vector3(x, y, z));
+                CreateCube(cursor.transform.position);
                 //Grid.Instance.CreateCube(new Vector3(x, y, z));
                 CheckConnections();
             }
