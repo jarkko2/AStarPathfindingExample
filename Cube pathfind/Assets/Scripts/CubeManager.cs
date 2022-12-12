@@ -5,18 +5,31 @@ using UnityEngine;
 public class CubeManager : MonoBehaviour
 {
     public static CubeManager Instance;
-    public List<GameObject> Wheels;
-    public List<GameObject> Engines;
-    public List<GameObject> Fuels;
 
     public GameObject cube;
-    private Vector3 worldPosition;
+    public List<GameObject> cubes = new List<GameObject>();
     public GameObject cursor;
 
     public Material Connected;
     public Material NotConnected;
 
-    public List<GameObject> cubes = new List<GameObject>();
+    public enum CubeType
+    {
+        PATH,
+        YELLOW,
+        SOURCE,
+        RED,
+        PURPLE
+    }
+
+    [System.Serializable]
+    public class BlockType
+    {
+        public CubeType Type;
+        public List<GameObject> Objects = new List<GameObject>();
+    }
+
+    public List<BlockType> blockTypes = new List<BlockType>();
 
     // Update is called once per frame
     private void Update()
@@ -24,24 +37,21 @@ public class CubeManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 50))
         {
-            worldPosition = hit.point;
             float x = Mathf.RoundToInt(hit.point.x);
             float y = Mathf.RoundToInt(hit.point.y);
             float z = Mathf.RoundToInt(hit.point.z);
-            cursor.transform.position = new Vector3(x, y, z);
-            //cursor.transform.rotation = Quaternion.FromToRotation(cursor.transform.up, hitData.normal) * cursor.transform.rotation;
 
+            cursor.transform.position = new Vector3(x, y, z);
+
+            // Do not rotate on plane
             if (hit.transform.GetComponent<CubeController>())
             {
                 cursor.transform.position = (hit.transform.position + hit.transform.up) + (hit.normal - Vector3.up);
             }
 
-            //Debug.Log(hitData.point);
             if (Input.GetMouseButtonDown(1))
             {
-                //CreateCube(new Vector3(x, y, z));
                 CreateCube(cursor.transform.position);
-                //Grid.Instance.CreateCube(new Vector3(x, y, z));
                 CheckConnections();
             }
         }
@@ -65,26 +75,30 @@ public class CubeManager : MonoBehaviour
         {
             cubes[i].transform.GetComponent<CubeController>().Occupied = false;
         }
-        foreach (var wheel in Wheels)
+        for (int i = 0; i < blockTypes.Count; i++)
         {
-            wheel.transform.GetComponent<CubeController>().CheckConnection();
+            if (blockTypes[i].Type == CubeType.SOURCE)
+            {
+                foreach (GameObject source in blockTypes[i].Objects)
+                {
+                    source.transform.GetComponent<CubeController>().CheckConnection();
+                }
+            }
         }
     }
 
     public List<GameObject> SortClosestType(GameObject source, CubeType type)
     {
-        if (type == CubeType.ENGINE)
+        for (int i = 0; i < blockTypes.Count; i++)
         {
-            return Engines.OrderBy(
-               x => Vector3.Distance(source.transform.position, x.transform.position)
-              ).ToList();
+            if (blockTypes[i].Type == type)
+            {
+                return blockTypes[i].Objects.OrderBy(
+                x => Vector3.Distance(source.transform.position, x.transform.position)
+                ).ToList();
+            }
         }
-        if (type == CubeType.FUEL)
-        {
-            return Fuels.OrderBy(
-               x => Vector3.Distance(source.transform.position, x.transform.position)
-              ).ToList();
-        }
+        Debug.LogError("Did not found object types!");
         return null;
     }
 
@@ -101,28 +115,19 @@ public class CubeManager : MonoBehaviour
         }
     }
 
-    public enum CubeType
-    {
-        NORMAL,
-        ENGINE,
-        WHEEL,
-        FUEL
-    }
-
     public void AddToList(CubeType type, GameObject cube)
     {
-        if (type == CubeType.ENGINE)
+        for (int i = 0; i < blockTypes.Count; i++)
         {
-            Engines.Add(cube);
+            if (blockTypes[i].Type == type)
+            {
+                blockTypes[i].Objects.Add(cube);
+                return;
+            }
         }
-        if (type == CubeType.WHEEL)
-        {
-            Wheels.Add(cube);
-        }
-        if (type == CubeType.FUEL)
-        {
-            Fuels.Add(cube);
-        }
+        BlockType blockType = new BlockType();
+        blockType.Type = type;
+        blockType.Objects.Add(cube);
+        blockTypes.Add(blockType);
     }
-
 }

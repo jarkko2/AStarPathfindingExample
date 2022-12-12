@@ -13,7 +13,7 @@ public class CubeController : MonoBehaviour
     public GameObject originalSeeker;
 
     // Engine is default connection required
-    public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.ENGINE };
+    public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.YELLOW };
 
     public void ClearPath(CubeManager.CubeType type)
     {
@@ -44,15 +44,20 @@ public class CubeController : MonoBehaviour
 
     private void Update()
     {
-        if (type == CubeManager.CubeType.WHEEL)
+        if (type == CubeManager.CubeType.SOURCE)
         {
             meshRend.material = Connection ? CubeManager.Instance.Connected : CubeManager.Instance.NotConnected;
         }
-        if (type == CubeManager.CubeType.FUEL)
+        // TODO change to something else (type == goal) or something to remove hard coded stuff
+        if (type == CubeManager.CubeType.RED)
         {
             Occupied = false;
         }
-        if (type == CubeManager.CubeType.ENGINE)
+        if (type == CubeManager.CubeType.YELLOW)
+        {
+            Occupied = false;
+        }
+        if (type == CubeManager.CubeType.PURPLE)
         {
             Occupied = false;
         }
@@ -113,7 +118,7 @@ public class CubeController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            if (type == CubeManager.CubeType.NORMAL)
+            if (type == CubeManager.CubeType.PATH)
             {
                 Debug.Log("Deleting");
                 GridManager.Instance.RemoveBlockFromGrid(gameObject);
