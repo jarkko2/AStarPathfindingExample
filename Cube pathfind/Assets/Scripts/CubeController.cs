@@ -13,6 +13,7 @@ public class CubeController : MonoBehaviour
     public GameObject originalSeeker;
 
     // Engine is default connection required
+    /// Add more, for example two yellows required etc
     public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.YELLOW };
 
     public void ClearPath(CubeManager.CubeType type)
@@ -48,16 +49,7 @@ public class CubeController : MonoBehaviour
         {
             meshRend.material = Connection ? CubeManager.Instance.Connected : CubeManager.Instance.NotConnected;
         }
-        // TODO change to something else (type == goal) or something to remove hard coded stuff
-        if (type == CubeManager.CubeType.RED)
-        {
-            Occupied = false;
-        }
-        if (type == CubeManager.CubeType.YELLOW)
-        {
-            Occupied = false;
-        }
-        if (type == CubeManager.CubeType.PURPLE)
+        if (CubeManager.Instance.IsForceNotOccupied(type))
         {
             Occupied = false;
         }

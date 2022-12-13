@@ -23,6 +23,26 @@ public class CubeManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class CubeSetting
+    {
+        public CubeType Type;
+        public bool ForceNotOccupied;
+    }
+    public List<CubeSetting> cubeSettings = new List<CubeSetting>();
+
+    public bool IsForceNotOccupied (CubeType type)
+    {
+        for (int i = 0; i < cubeSettings.Count; i++)
+        {
+            if (cubeSettings[i].Type == type)
+            {
+                return cubeSettings[i].ForceNotOccupied;
+            }
+        }
+        return false;
+    }
+
+    [System.Serializable]
     public class BlockType
     {
         public CubeType Type;

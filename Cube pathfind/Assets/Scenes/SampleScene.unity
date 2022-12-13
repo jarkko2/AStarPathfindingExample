@@ -752,7 +752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 861368855911860227, guid: 47b75928d0525fa468736085f8920bba, type: 3}
       propertyPath: connectionsRequired.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 861368855911860227, guid: 47b75928d0525fa468736085f8920bba, type: 3}
       propertyPath: connectionsRequired.Array.data[0]
@@ -761,6 +761,10 @@ PrefabInstance:
     - target: {fileID: 861368855911860227, guid: 47b75928d0525fa468736085f8920bba, type: 3}
       propertyPath: connectionsRequired.Array.data[1]
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 861368855911860227, guid: 47b75928d0525fa468736085f8920bba, type: 3}
+      propertyPath: connectionsRequired.Array.data[2]
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 861368855911860238, guid: 47b75928d0525fa468736085f8920bba, type: 3}
       propertyPath: m_Name
@@ -902,6 +906,15 @@ MonoBehaviour:
   cursor: {fileID: 1996015811}
   Connected: {fileID: 2100000, guid: 3476ce62452f3fd42bff89b58c22e5ce, type: 2}
   NotConnected: {fileID: 2100000, guid: 6a66975b811d80149806fd9d55ae4859, type: 2}
+  cubeSettings:
+  - Type: 0
+    ForceNotOccupied: 0
+  - Type: 1
+    ForceNotOccupied: 1
+  - Type: 3
+    ForceNotOccupied: 1
+  - Type: 4
+    ForceNotOccupied: 1
   blockTypes: []
 --- !u!114 &1712469398
 MonoBehaviour:
