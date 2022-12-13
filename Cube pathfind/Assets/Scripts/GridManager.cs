@@ -34,7 +34,7 @@ public class GridManager : MonoBehaviour
                 Material material = configuration.PathMaterial;
                 Vector3 offset = configuration.Offset;
                 float Width = configuration.Width;
-                float Height = 1.1f;
+                float Height = 0.2f;
 
                 GameObject pathObj = Instantiate(Instance.pathObject, path[i].worldPosition + new Vector3(0, 0.1f, 0), Quaternion.identity);
                 pathObj.GetComponent<MeshRenderer>().material = material;

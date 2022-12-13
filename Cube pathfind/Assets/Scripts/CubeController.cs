@@ -10,9 +10,12 @@ public class CubeController : MonoBehaviour
     public bool Occupied;
     public GameObject originalSeeker;
 
+    public List<GameObject> ConnectionNodes = new List<GameObject>();
+
     // Engine is default connection required
     /// Add more, for example two yellows required etc
     public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.YELLOW };
+
 
     public void ClearPath(CubeManager.CubeType type)
     {
@@ -37,7 +40,7 @@ public class CubeController : MonoBehaviour
             Debug.LogError("GridManager was not ready");
         }
         meshRend = GetComponent<MeshRenderer>();
-        meshRend.enabled = true;
+        meshRend.enabled = type != CubeManager.CubeType.PATH;
         transform.GetComponent<BoxCollider>().enabled = true;
     }
 
@@ -80,6 +83,38 @@ public class CubeController : MonoBehaviour
             }
         }
         Connection = !noConnectionAtSomePoint;
+    }
+
+    public void CheckNodeConnections()
+    {
+        Debug.Log("ASDASD");
+        // Clear first
+        foreach (GameObject node in ConnectionNodes)
+        {
+            node.GetComponent<MeshRenderer>().enabled = false;
+        }
+        foreach (GameObject node in ConnectionNodes)
+        {
+            Collider[] hits = Physics.OverlapSphere(node.transform.position, 0.25f);
+            List<Collider> templistHits = new List<Collider>();
+            List<Collider> listHits = new List<Collider>();
+            for (int i = 0; i < hits.Length; i++)
+            {
+                templistHits.Add(hits[i]);
+            }
+            for (int i = 0; i < templistHits.Count; i++)
+            {
+                if (!ConnectionNodes.Contains(templistHits[i].gameObject) && templistHits[i].gameObject != gameObject)
+                {
+                    Debug.Log("Hit" + templistHits[i].gameObject.name);
+                    listHits.Add(templistHits[i]);
+                }
+            }
+            if (listHits.Count > 0)
+            {
+                node.GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
     }
 
     private void OnMouseDown()

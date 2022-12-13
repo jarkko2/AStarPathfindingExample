@@ -75,7 +75,7 @@ public class CubeManager : MonoBehaviour
     }
 
     public List<BlockType> blockTypes = new List<BlockType>();
-
+    
     // Update is called once per frame
     private void Update()
     {
@@ -126,6 +126,16 @@ public class CubeManager : MonoBehaviour
                 foreach (GameObject source in blockTypes[i].Objects)
                 {
                     source.transform.GetComponent<CubeController>().CheckConnection();
+                }
+            }
+            if (blockTypes[i].Type == CubeType.PATH)
+            {
+                foreach (GameObject path in blockTypes[i].Objects)
+                {
+                    if (path != null)
+                    {
+                        path.transform.GetComponent<CubeController>().CheckNodeConnections();
+                    }
                 }
             }
         }
