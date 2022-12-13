@@ -104,7 +104,8 @@ public class CubeController : MonoBehaviour
             }
             for (int i = 0; i < templistHits.Count; i++)
             {
-                if (!ConnectionNodes.Contains(templistHits[i].gameObject) && templistHits[i].gameObject != gameObject)
+                if (!ConnectionNodes.Contains(templistHits[i].gameObject) && templistHits[i].gameObject != gameObject
+                    && CubeManager.Instance.IsBuildable(templistHits[i].GetComponent<CubeController>().type))
                 {
                     Debug.Log("Hit" + templistHits[i].gameObject.name);
                     listHits.Add(templistHits[i]);

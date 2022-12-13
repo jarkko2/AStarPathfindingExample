@@ -7,8 +7,6 @@ public class PathBlockManager : MonoBehaviour
     public Mesh CornerMesh;
     public Mesh DefaultMesh;
 
-    public List<Material> Materials = new List<Material>();
-
     [System.Serializable]
     public class PathConfiguration
     {
@@ -33,8 +31,7 @@ public class PathBlockManager : MonoBehaviour
         return pathConfigurations[0];
     }
 
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -44,11 +41,5 @@ public class PathBlockManager : MonoBehaviour
         {
             Destroy(this);
         }
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
     }
 }
