@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    public bool connectionToEngine;
-    public bool connectionToFuel;
     public bool Connection;
     public CubeManager.CubeType type;
     public MeshRenderer meshRend;
@@ -68,9 +66,6 @@ public class CubeController : MonoBehaviour
 
     public void CheckConnection()
     {
-        //connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.ENGINE), CubeManager.CubeType.ENGINE);
-        //connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, CubeManager.Instance.GetClosestType(gameObject, CubeManager.CubeType.FUEL), CubeManager.CubeType.FUEL);
-
         bool noConnectionAtSomePoint = false;
 
         foreach (CubeManager.CubeType type in connectionsRequired)
@@ -85,25 +80,6 @@ public class CubeController : MonoBehaviour
             }
         }
         Connection = !noConnectionAtSomePoint;
-
-
-        //foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.ENGINE))
-        //{
-        //    connectionToEngine = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.ENGINE);
-        //    if (connectionToEngine)
-        //    {
-        //        break;
-        //    }
-        //}
-
-        //foreach (var item in CubeManager.Instance.SortClosestType(gameObject, CubeManager.CubeType.FUEL))
-        //{
-        //    connectionToFuel = GridManager.Instance.CheckConnectionBetweenPoints(gameObject, item, CubeManager.CubeType.FUEL);
-        //    if (connectionToFuel)
-        //    {
-        //        break;
-        //    }
-        //} 
     }
 
     private void OnMouseDown()

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 public class DragMouseOrbit : MonoBehaviour
 {
     public Transform target;
@@ -39,14 +36,15 @@ public class DragMouseOrbit : MonoBehaviour
 
 
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-       // distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+        // distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         distanceBetweenCameraAndTarget += Input.mouseScrollDelta.y;
         if (rotateMethod == RotateMethod.Mouse)

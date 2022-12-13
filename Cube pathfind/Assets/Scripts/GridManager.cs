@@ -6,10 +6,7 @@ public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
     private List<Cube> grid = new List<Cube>();
-    //private List<Cube> path = new List<Cube>();
     public GameObject pathObject;
-
-    //public List<GameObject> pathObjects;
     public float delayOnSpawning;
 
     [System.Serializable]
@@ -49,17 +46,15 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-                    Mesh mesh;
-                    int rotation;
-                    pathObj.transform.localScale = FigureOutScaleRotationAndMesh(path[i].worldPosition, path[i + 1].worldPosition, path[i - 1].worldPosition, offset, Width, Height, out mesh, out rotation);
+                    pathObj.transform.localScale = FigureOutScaleRotationAndMesh(path[i].worldPosition, path[i + 1].worldPosition, path[i - 1].worldPosition, offset, Width, Height, out Mesh mesh, out int rotation);
                     pathObj.transform.GetComponent<MeshFilter>().mesh = mesh;
                     pathObj.transform.Rotate(new Vector3(0, rotation, 0));
                     pathObjects.Add(pathObj);
                 }
                 yield return new WaitForSeconds(Instance.delayOnSpawning);
-            }       
+            }
         }
-        public Vector3 FigureOutScaleRotationAndMesh(Vector3 start, Vector3 next, Vector3 behind, Vector3 offset, float width, float height, out Mesh mesh, out int rotation)
+        private Vector3 FigureOutScaleRotationAndMesh(Vector3 start, Vector3 next, Vector3 behind, Vector3 offset, float width, float height, out Mesh mesh, out int rotation)
         {
             Vector3 scale = new Vector3(0.5f + offset.x, height + offset.y, 0.5f + offset.z);
             Mesh tempmesh = PathBlockManager.Instance.DefaultMesh;
@@ -245,7 +240,8 @@ public class GridManager : MonoBehaviour
                 }
 
                 int newMovementCostToNeigbour = current.gCost + GetDistance(current, neigbour);
-                if (newMovementCostToNeigbour < neigbour.gCost || !open.Contains(neigbour))
+                if ((newMovementCostToNeigbour < neigbour.gCost || !open.Contains(neigbour)) && 
+                    CubeManager.Instance.IsTraveable(current.cubeObject.transform.GetComponent<CubeController>().type))
                 {
                     neigbour.gCost = newMovementCostToNeigbour;
                     neigbour.hCost = GetDistance(neigbour, FindCubeOfGameObjectInGrid(target));
@@ -269,7 +265,7 @@ public class GridManager : MonoBehaviour
     {
         List<Cube> foundPath = new List<Cube>();
         Cube currentNode = endNode;
-        
+
         while (currentNode != startNode)
         {
             foundPath.Add(currentNode);
@@ -301,7 +297,7 @@ public class GridManager : MonoBehaviour
     {
         List<Cube> neighbours = new List<Cube>();
         Collider[] hits = Physics.OverlapSphere(cube.cubeObject.transform.position, 0.5f);
-       
+
         foreach (Collider hit in hits)
         {
             Debug.Log(hit);

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +22,8 @@ public class PathBlockManager : MonoBehaviour
 
     public PathConfiguration GetConfigurationByType(CubeManager.CubeType type)
     {
-        foreach (PathConfiguration pathConf in pathConfigurations){
+        foreach (PathConfiguration pathConf in pathConfigurations)
+        {
             if (pathConf.Type == type)
             {
                 return pathConf;
@@ -34,7 +34,7 @@ public class PathBlockManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (Instance == null)
         {
@@ -47,8 +47,8 @@ public class PathBlockManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+
     }
 }

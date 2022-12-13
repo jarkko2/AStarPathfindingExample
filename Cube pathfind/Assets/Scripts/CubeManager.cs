@@ -19,7 +19,8 @@ public class CubeManager : MonoBehaviour
         YELLOW,
         SOURCE,
         RED,
-        PURPLE
+        PURPLE,
+        WALL
     }
 
     [System.Serializable]
@@ -27,16 +28,40 @@ public class CubeManager : MonoBehaviour
     {
         public CubeType Type;
         public bool ForceNotOccupied;
+        public bool CanTravel;
+        public bool CanBuildOn;
     }
     public List<CubeSetting> cubeSettings = new List<CubeSetting>();
 
-    public bool IsForceNotOccupied (CubeType type)
+    public bool IsForceNotOccupied(CubeType type)
     {
         for (int i = 0; i < cubeSettings.Count; i++)
         {
             if (cubeSettings[i].Type == type)
             {
                 return cubeSettings[i].ForceNotOccupied;
+            }
+        }
+        return false;
+    }
+    public bool IsTraveable(CubeType type)
+    {
+        for (int i = 0; i < cubeSettings.Count; i++)
+        {
+            if (cubeSettings[i].Type == type)
+            {
+                return cubeSettings[i].CanTravel;
+            }
+        }
+        return false;
+    }
+    public bool IsBuildable(CubeType type)
+    {
+        for (int i = 0; i < cubeSettings.Count; i++)
+        {
+            if (cubeSettings[i].Type == type)
+            {
+                return cubeSettings[i].CanBuildOn;
             }
         }
         return false;
@@ -63,17 +88,16 @@ public class CubeManager : MonoBehaviour
 
             cursor.transform.position = new Vector3(x, y, z);
 
-            // Do not rotate on plane
             if (hit.transform.GetComponent<CubeController>())
             {
                 cursor.transform.position = (hit.transform.position + hit.transform.up) + (hit.normal - Vector3.up);
+                cursor.transform.GetComponent<MeshRenderer>().enabled = Instance.IsBuildable(hit.transform.GetComponent<CubeController>().type);
             }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                CreateCube(cursor.transform.position);
-                CheckConnections();
-            }
+        }
+        if (Input.GetMouseButtonDown(1) && cursor.transform.GetComponent<MeshRenderer>().enabled)
+        {
+            CreateCube(cursor.transform.position);
+            CheckConnections();
         }
 
     }
@@ -145,8 +169,10 @@ public class CubeManager : MonoBehaviour
                 return;
             }
         }
-        BlockType blockType = new BlockType();
-        blockType.Type = type;
+        BlockType blockType = new BlockType
+        {
+            Type = type
+        };
         blockType.Objects.Add(cube);
         blockTypes.Add(blockType);
     }
