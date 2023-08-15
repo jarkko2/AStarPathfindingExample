@@ -4,6 +4,8 @@ Example project of A* pathfinding on Unity inside block grid
 Main goal is to connect every source block with connections required.   
 Connections are created with right mouse button and deleted with left mouse button   
 
+![image](image.png)
+
 # Features
 - Support for 3D grid
 - New connection type can be added to CubeType.cs
