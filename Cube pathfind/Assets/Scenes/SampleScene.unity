@@ -1224,7 +1224,7 @@ MonoBehaviour:
     ForceNotOccupied: 1
     CanTravel: 0
     CanBuildOn: 1
-    RequirementMaterial: {fileID: 2100000, guid: 6a66975b811d80149806fd9d55ae4859, type: 2}
+    RequirementMaterial: {fileID: 2100000, guid: e16ae69bae227844c8fad0ebe48ed19b, type: 2}
   - Type: 6
     ForceNotOccupied: 1
     CanTravel: 0
