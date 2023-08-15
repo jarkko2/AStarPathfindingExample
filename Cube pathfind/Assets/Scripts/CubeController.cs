@@ -4,7 +4,7 @@ using UnityEngine;
 public class CubeController : MonoBehaviour
 {
     public bool Connection;
-    public CubeManager.CubeType type;
+    public CubeType type;
     public MeshRenderer meshRend;
     public List<GridManager.Path> paths = new List<GridManager.Path>();
     public bool Occupied;
@@ -12,12 +12,12 @@ public class CubeController : MonoBehaviour
 
     public List<GameObject> ConnectionNodes = new List<GameObject>();
 
-    public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.YELLOW };
+    public List<CubeType> connectionsRequired = new List<CubeType>() { CubeType.Yellow };
 
     public GameObject ConnectionRequirementSlabRoot;
     public GameObject ConnectionRequirementSlab;
 
-    public void ClearPath(CubeManager.CubeType type)
+    public void ClearPath(CubeType type)
     {
         foreach (GridManager.Path path in paths)
         {
@@ -40,10 +40,10 @@ public class CubeController : MonoBehaviour
             Debug.LogError("GridManager was not ready");
         }
         meshRend = GetComponent<MeshRenderer>();
-        meshRend.enabled = type != CubeManager.CubeType.PATH;
+        meshRend.enabled = type != CubeType.Path;
         transform.GetComponent<BoxCollider>().enabled = true;
 
-        if (type == CubeManager.CubeType.SOURCE)
+        if (type == CubeType.Source)
         {
             AddConnectionRequirementSlabs();
         }
@@ -66,7 +66,7 @@ public class CubeController : MonoBehaviour
 
     private void Update()
     {
-        if (type == CubeManager.CubeType.SOURCE)
+        if (type == CubeType.Source)
         {
             meshRend.material = Connection ? CubeManager.Instance.Connected : CubeManager.Instance.NotConnected;
         }
@@ -91,7 +91,7 @@ public class CubeController : MonoBehaviour
     {
         bool noConnectionAtSomePoint = false;
 
-        foreach (CubeManager.CubeType type in connectionsRequired)
+        foreach (CubeType type in connectionsRequired)
         {
             foreach (var item in CubeManager.Instance.SortClosestType(gameObject, type))
             {
@@ -142,7 +142,7 @@ public class CubeController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            if (type == CubeManager.CubeType.PATH)
+            if (type == CubeType.Path)
             {
                 Debug.Log("Deleting");
                 GridManager.Instance.RemoveBlockFromGrid(gameObject);

@@ -13,16 +13,7 @@ public class CubeManager : MonoBehaviour
     public Material Connected;
     public Material NotConnected;
 
-    public enum CubeType
-    {
-        PATH,
-        YELLOW,
-        SOURCE,
-        RED,
-        PURPLE,
-        WALL,
-        ORANGE
-    }
+    
 
     [System.Serializable]
     public class CubeSetting
@@ -125,14 +116,14 @@ public class CubeManager : MonoBehaviour
         }
         for (int i = 0; i < blockTypes.Count; i++)
         {
-            if (blockTypes[i].Type == CubeType.SOURCE)
+            if (blockTypes[i].Type == CubeType.Source)
             {
                 foreach (GameObject source in blockTypes[i].Objects)
                 {
                     source.transform.GetComponent<CubeController>().CheckConnection();
                 }
             }
-            if (blockTypes[i].Type == CubeType.PATH)
+            if (blockTypes[i].Type == CubeType.Path)
             {
                 foreach (GameObject path in blockTypes[i].Objects)
                 {

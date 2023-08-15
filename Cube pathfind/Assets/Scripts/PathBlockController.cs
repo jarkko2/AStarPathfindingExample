@@ -5,6 +5,9 @@ public class PathBlockController : MonoBehaviour
     private Vector3 targetPos;
     public Material material;
 
+    private float moveSpeed = 2.0f;
+    private float minDistance = 0.01f;
+
     private void OnEnable()
     {
         targetPos = transform.position;
@@ -15,8 +18,12 @@ public class PathBlockController : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.01f);
+        if (Vector3.Distance(transform.position, targetPos) > minDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        }
+       
     }
 }

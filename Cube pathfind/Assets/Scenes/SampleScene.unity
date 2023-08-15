@@ -1208,7 +1208,7 @@ MonoBehaviour:
   cubes: []
   cursor: {fileID: 1996015811}
   Connected: {fileID: 2100000, guid: 3476ce62452f3fd42bff89b58c22e5ce, type: 2}
-  NotConnected: {fileID: 2100000, guid: 6a66975b811d80149806fd9d55ae4859, type: 2}
+  NotConnected: {fileID: 2100000, guid: e16ae69bae227844c8fad0ebe48ed19b, type: 2}
   cubeSettings:
   - Type: 0
     ForceNotOccupied: 0
@@ -1276,7 +1276,7 @@ MonoBehaviour:
   - Type: 6
     PathMaterial: {fileID: 2100000, guid: 90d4df874569edd4ea3dd749a579bb28, type: 2}
     Width: 0.5
-    Offset: {x: -0.2, y: 0.3, z: -0.2}
+    Offset: {x: -0.18, y: 0.3, z: -0.18}
 --- !u!1001 &1736917092
 PrefabInstance:
   m_ObjectHideFlags: 0

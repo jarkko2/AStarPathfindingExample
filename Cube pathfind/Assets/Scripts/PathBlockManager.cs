@@ -10,7 +10,7 @@ public class PathBlockManager : MonoBehaviour
     [System.Serializable]
     public class PathConfiguration
     {
-        public CubeManager.CubeType Type;
+        public CubeType Type;
         public Material PathMaterial;
         public float Width;
         public Vector3 Offset;
@@ -18,7 +18,7 @@ public class PathBlockManager : MonoBehaviour
 
     public List<PathConfiguration> pathConfigurations = new List<PathConfiguration>();
 
-    public PathConfiguration GetConfigurationByType(CubeManager.CubeType type)
+    public PathConfiguration GetConfigurationByType(CubeType type)
     {
         foreach (PathConfiguration pathConf in pathConfigurations)
         {

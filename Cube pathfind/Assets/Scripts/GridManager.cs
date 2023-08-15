@@ -12,7 +12,7 @@ public class GridManager : MonoBehaviour
     [System.Serializable]
     public class Path
     {
-        public CubeManager.CubeType pathType;
+        public CubeType pathType;
         public List<Cube> path = new List<Cube>();
         public List<GameObject> pathObjects = new List<GameObject>();
 
@@ -181,7 +181,7 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public bool CheckConnectionBetweenPoints(GameObject seeker, GameObject target, CubeManager.CubeType type)
+    public bool CheckConnectionBetweenPoints(GameObject seeker, GameObject target, CubeType type)
     {
         List<Cube> open = new List<Cube>();
         List<Cube> closed = new List<Cube>();
@@ -242,7 +242,7 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
-    private void RetracePath(Cube startNode, Cube endNode, CubeManager.CubeType type)
+    private void RetracePath(Cube startNode, Cube endNode, CubeType type)
     {
         List<Cube> foundPath = new List<Cube>();
         Cube currentNode = endNode;
