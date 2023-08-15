@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
                 yield return new WaitForSeconds(Instance.delayOnSpawning);
             }
         }
+
         private Vector3 FigureOutScaleRotationAndMesh(Vector3 start, Vector3 next, Vector3 behind, Vector3 offset, float width, float height, out Mesh mesh, out int rotation)
         {
             Vector3 scale = new Vector3(0.5f + offset.x, height + offset.y, 0.5f + offset.z);
@@ -166,26 +167,6 @@ public class GridManager : MonoBehaviour
         CubeManager.Instance.cubes.Remove(cube);
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (grid != null)
-    //    {
-    //        foreach (Cube n in grid)
-    //        {
-    //            Debug.Log(n.worldPosition);
-    //            Gizmos.color = Color.green;
-    //            //if (path != null)
-    //            //{
-    //            //    if (path.Contains(n))
-    //            //    {
-    //            //        Gizmos.color = Color.black;
-    //            //    }
-    //            //}
-    //            Gizmos.DrawCube(n.worldPosition, Vector3.one - new Vector3(0.1f, -1.1f, 0.1f));
-    //        }
-    //    }
-    //}
-
     public Cube FindCubeOfGameObjectInGrid(GameObject cube)
     {
         for (int i = 0; i < grid.Count; i++)
@@ -240,7 +221,7 @@ public class GridManager : MonoBehaviour
                 }
 
                 int newMovementCostToNeigbour = current.gCost + GetDistance(current, neigbour);
-                if ((newMovementCostToNeigbour < neigbour.gCost || !open.Contains(neigbour)) && 
+                if ((newMovementCostToNeigbour < neigbour.gCost || !open.Contains(neigbour)) &&
                     CubeManager.Instance.IsTraveable(current.cubeObject.transform.GetComponent<CubeController>().type))
                 {
                     neigbour.gCost = newMovementCostToNeigbour;
@@ -321,21 +302,6 @@ public class GridManager : MonoBehaviour
 
     private int GetDistance(Cube nodeA, Cube nodeB)
     {
-        //int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-        //int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
-
-        //int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-        //int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
-        //int dstZ = Mathf.Abs(nodeA.gridZ - nodeB.gridZ);
-
-
-        //if (dstX > dstY)
-        //{
-        //    return 14 * dstY + 10 * (dstX - dstY);
-        //}
-
-        //return 14 * dstX + 10 * (dstY - dstX);
         return Mathf.RoundToInt(Vector3.Distance(new Vector3(nodeA.gridX, nodeA.gridY, nodeA.gridZ), new Vector3(nodeB.gridX, nodeB.gridY, nodeB.gridZ)));
     }
-
 }
