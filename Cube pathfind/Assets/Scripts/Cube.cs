@@ -11,6 +11,7 @@ public class Cube
     public int gridZ;
     public int gCost;
     public int hCost;
+
     public int fCost
     {
         get
@@ -18,6 +19,7 @@ public class Cube
             return gCost + hCost;
         }
     }
+
     public bool Occupied;
 
     public Cube(Vector3 _worldPos, GameObject _cubeObject, int _gridX, int _gridY, int _gridZ)

@@ -20,7 +20,8 @@ public class CubeManager : MonoBehaviour
         SOURCE,
         RED,
         PURPLE,
-        WALL
+        WALL,
+        ORANGE
     }
 
     [System.Serializable]
@@ -30,7 +31,9 @@ public class CubeManager : MonoBehaviour
         public bool ForceNotOccupied;
         public bool CanTravel;
         public bool CanBuildOn;
+        public Material RequirementMaterial;
     }
+
     public List<CubeSetting> cubeSettings = new List<CubeSetting>();
 
     public bool IsForceNotOccupied(CubeType type)
@@ -44,6 +47,7 @@ public class CubeManager : MonoBehaviour
         }
         return false;
     }
+
     public bool IsTraveable(CubeType type)
     {
         for (int i = 0; i < cubeSettings.Count; i++)
@@ -55,6 +59,7 @@ public class CubeManager : MonoBehaviour
         }
         return false;
     }
+
     public bool IsBuildable(CubeType type)
     {
         for (int i = 0; i < cubeSettings.Count; i++)
@@ -75,7 +80,7 @@ public class CubeManager : MonoBehaviour
     }
 
     public List<BlockType> blockTypes = new List<BlockType>();
-    
+
     // Update is called once per frame
     private void Update()
     {
@@ -99,7 +104,6 @@ public class CubeManager : MonoBehaviour
             CreateCube(cursor.transform.position);
             CheckConnections();
         }
-
     }
 
     private void Start()
@@ -156,7 +160,6 @@ public class CubeManager : MonoBehaviour
         return null;
     }
 
-
     public void Awake()
     {
         if (Instance == null)
@@ -185,5 +188,18 @@ public class CubeManager : MonoBehaviour
         };
         blockType.Objects.Add(cube);
         blockTypes.Add(blockType);
+    }
+
+    public Material FindConnectionRequirementMaterialWithType(CubeType blockType)
+    {
+        for (int i = 0; i < cubeSettings.Count; i++)
+        {
+            if (cubeSettings[i].Type == blockType)
+            {
+                return cubeSettings[i].RequirementMaterial;
+            }
+        }
+        Debug.LogError("Did not find requirement material");
+        return cubeSettings[0].RequirementMaterial;
     }
 }

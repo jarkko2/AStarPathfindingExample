@@ -12,10 +12,10 @@ public class CubeController : MonoBehaviour
 
     public List<GameObject> ConnectionNodes = new List<GameObject>();
 
-    // Engine is default connection required
-    /// Add more, for example two yellows required etc
     public List<CubeManager.CubeType> connectionsRequired = new List<CubeManager.CubeType>() { CubeManager.CubeType.YELLOW };
 
+    public GameObject ConnectionRequirementSlabRoot;
+    public GameObject ConnectionRequirementSlab;
 
     public void ClearPath(CubeManager.CubeType type)
     {
@@ -42,6 +42,26 @@ public class CubeController : MonoBehaviour
         meshRend = GetComponent<MeshRenderer>();
         meshRend.enabled = type != CubeManager.CubeType.PATH;
         transform.GetComponent<BoxCollider>().enabled = true;
+
+        if (type == CubeManager.CubeType.SOURCE)
+        {
+            AddConnectionRequirementSlabs();
+        }
+
+    }
+
+    private void AddConnectionRequirementSlabs()
+    {
+        float heigth = 0.5f + ConnectionRequirementSlab.transform.lossyScale.y;
+        for (int i = 0; i < connectionsRequired.Count; i++)
+        {
+            Material material = CubeManager.Instance.FindConnectionRequirementMaterialWithType(connectionsRequired[i]);
+            GameObject slab = Instantiate(ConnectionRequirementSlab, transform.position, Quaternion.identity);
+            slab.GetComponent<ConnectionRequirementSlabController>().meshRenderer.material = material;
+            slab.transform.SetParent(ConnectionRequirementSlabRoot.transform);
+            slab.transform.localPosition = new Vector3(0, heigth, 0);
+            heigth += ConnectionRequirementSlab.transform.lossyScale.y * 2;
+        }
     }
 
     private void Update()
